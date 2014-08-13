@@ -16,6 +16,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.extensions.yii-mail.YiiMailMessage',
 	),
 
 	'modules'=>array(
@@ -79,12 +80,27 @@ return array(
 				*/
 			),
 		),
+		//send mail contact
+		'mail' => array(
+			'class' => 'ext.yii-mail.YiiMail',
+			'transportType'=>'smtp',
+			'transportOptions'=>array(
+				'host'=>'smtp.gmail.com',
+				'username'=>'ngoduytrung2903',
+				'password'=>'DuyKim012391',
+				'port'=>'465',
+				'encryption'=>'ssl',
+			),
+			'viewPath' => 'application.views.mail',
+			'logging' => true,
+			'dryRun' => false
+		),
 	),
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'ngoduytrung2903@gmail.com',
 	),
 );

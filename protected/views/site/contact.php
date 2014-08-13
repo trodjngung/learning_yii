@@ -60,6 +60,11 @@ If you have business inquiries or other questions, please fill out the following
 		<?php echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'body'); ?>
 	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'image'); ?>
+		<?php echo $form->fileField($model, 'image'); ?>
+		<?php echo $form->error($model, 'image'); ?>
+	</div>
 
 	<?php if(CCaptcha::checkRequirements()): ?>
 	<div class="row">

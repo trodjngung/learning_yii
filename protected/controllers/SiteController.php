@@ -57,14 +57,29 @@ class SiteController extends Controller
 			$model->attributes=$_POST['ContactForm'];
 			if($model->validate())
 			{
-				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
-				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
-				$headers="From: $name <{$model->email}>\r\n".
-					"Reply-To: {$model->email}\r\n".
-					"MIME-Version: 1.0\r\n".
-					"Content-Type: text/plain; charset=UTF-8";
+				$headers="From: {$model->name}<br>".
+					"Reply-To: {$model->email}<br>".
+					"Content: <br>"."{$model->body}";
+				$message = new YiiMailMessage;
+				$message->setBody($headers, 'text/html');
+				$message->subject = $model->subject;
+				// Send mail cho một địa chỉ mail
+				$message->addTo('ngoduytrung2901@gmail.com');
+				//Send mail cho nhiều địa chỉ mail
+				//$message->setTo(array('ngoduytrung2903@gmail.com', 'ngoduytrung2901@gmail.com'));
+				//setCc(), setBcc() viết tương tự như setTo()
+				//Địa chỉ mủa mail gửi đi và tên muốn đặt.
+				$message->setFrom(Yii::app()->params['adminEmail'], 'Admin');
+				//Địa chỉ mail nhận trả lời của những mail đã giử tới
+				$message->setReplyTo('ngo.duy.trung@framgia.com');
+				//gửi file đính kèm
+				$file_path = 'protected/controllers/UserController.php';
+				// $image = CUploadedFile::getInstance($model, 'image');
+				// $file_path = $image->tempName;
+				$swiftAttachment = Swift_Attachment::fromPath($file_path);
+				$message->attach($swiftAttachment);
 
-				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
+				Yii::app()->mail->send($message);
 				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
 				$this->refresh();
 			}

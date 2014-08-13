@@ -12,6 +12,7 @@ class ContactForm extends CFormModel
 	public $subject;
 	public $body;
 	public $verifyCode;
+	public $image;
 
 	/**
 	 * Declares the validation rules.
@@ -25,6 +26,13 @@ class ContactForm extends CFormModel
 			array('email', 'email'),
 			// verifyCode needs to be entered correctly
 			array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),
+			//fileupload
+			array('image', 'file', 
+				// 'types'=>'jpg, gif, png',
+				'allowEmpty' => true,
+				'maxSize' => 1024 * 1024 * 50,
+				'tooLarge' => 'The file was larger than 50MB. Please upload a smaller file.',
+			),
 		);
 	}
 
