@@ -17,6 +17,7 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.extensions.yii-mail.YiiMailMessage',
+		'application.extensions.CsvExtensions',
 	),
 
 	'modules'=>array(

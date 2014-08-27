@@ -121,4 +121,64 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+	/*
+	* Read file csv
+	*/
+	public function actionCsv()
+	{
+		$model=new CsvForm;
+		$csvData = null;
+		if (isset($_POST['CsvForm'])) {
+			
+			$model->attributes=$_POST['UserImportForm'];
+			if($model->validate()){
+				$csvFile=CUploadedFile::getInstance($model,'file');  
+                $filePath=$csvFile->getTempName();
+                $csvData = $this->CsvFileToString($filePath);
+			}
+			
+		}
+		$this->render('csv', array('model'=>$model, 'csvData'=>$csvData));
+
+	}
+	/*
+	* Chuyen du lieu trong csv tu string sang arrary
+	*/
+	public function CsvFileToString($filePath)
+	{
+		if (file_exists($filePath)) {
+			$file_handle = fopen($filePath, "r");
+			$csvData = null;
+			while ($data = fgetcsv($file_handle)) {
+				$csvData[] = $data;
+			}
+			fclose($file_handle);
+			return $csvData;
+		} else {
+			return false;
+		}
+	}
+	/*
+	* Tai du lieu ve duoi dang file csv
+	*/
+	public function actionCsvDownload()
+	{
+		$csvData = null;
+		$csvData[] = array('name','email','password');
+		$csvData[] = array('trung_1','email@fa.com','123456');
+		$csvData[] = array('trung_2','email@fa.com','123456');
+		$csvData[] = array('trung_3','email@fa.com','123456');
+		$csvData[] = array('trung_4','email@fa.com','123456');
+		$csvData[] = array('trung_5','email@fa.com','123456');
+		$csvData[] = array('trung_6','email@fa.com','123456');
+		$csvData[] = array('trung_7','email@fa.com','123456');
+		
+		$csv = new CsvExtensions;
+		foreach ($csvData as $key => $value) {
+			$csv->addRow($value);
+		}
+		$title = 'filecsv'.date('d-m-Y H-i');
+		echo $csv->render($title,'UTF-8');
+		exit;
+	}
 }
