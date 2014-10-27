@@ -181,4 +181,12 @@ class SiteController extends Controller
 		echo $csv->render($title,'UTF-8');
 		exit;
 	}
+	/**
+	* 
+	*/
+	public function actionValidates()
+	{
+		$model = new Validates;
+		$this->render('validates',array('model'=>$model));
+	}
 }
